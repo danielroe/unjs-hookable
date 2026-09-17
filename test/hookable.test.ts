@@ -26,6 +26,16 @@ describe("HookableCore", () => {
     await hookable.callHook("test");
     expect(calls).toBe(1);
   });
+
+  test("should support hook names from Object.prototype", async () => {
+    const hookable = new HookableCore();
+    let calls = 0;
+    hookable.hook("toString", () => {
+      calls++;
+    });
+    await hookable.callHook("toString");
+    expect(calls).toBe(1);
+  });
 });
 
 describe("hookable", () => {
@@ -52,6 +62,14 @@ describe("hookable", () => {
     expect(hook._hooks["test:hook"]).toHaveLength(2);
     expect(hook._hooks["test:hook"]).toBeInstanceOf(Array);
     expect(hook._hooks["test:hook"]).toEqual([expect.any(Function), expect.any(Function)]);
+  });
+
+  test("should support hook names from Object.prototype", async () => {
+    const hook = new Hookable();
+    const fn = vi.fn();
+    hook.hook("toString", fn);
+    await hook.callHook("toString");
+    expect(fn).toHaveBeenCalledTimes(1);
   });
 
   test("should ignore empty hook name", () => {

@@ -28,11 +28,11 @@ export class Hookable<
   private _deprecatedMessages?: Set<string>;
 
   constructor() {
-    this._hooks = {};
+    this._hooks = { __proto__: null };
     this._before = undefined;
     this._after = undefined;
     this._deprecatedMessages = undefined;
-    this._deprecatedHooks = {};
+    this._deprecatedHooks = { __proto__: null };
 
     // Allow destructuring hook and callHook functions out of instance object
     this.hook = this.hook.bind(this);
@@ -174,7 +174,7 @@ export class Hookable<
   }
 
   removeAllHooks(): void {
-    this._hooks = {};
+    this._hooks = { __proto__: null };
   }
 
   callHook<NameT extends HookNameT>(
@@ -263,7 +263,7 @@ export class HookableCore<
   protected _hooks: { [key: string]: HookCallback[] | undefined };
 
   constructor() {
-    this._hooks = {};
+    this._hooks = { __proto__: null };
   }
 
   hook<NameT extends HookNameT>(name: NameT, fn: InferCallback<HooksT, NameT>): () => void {
